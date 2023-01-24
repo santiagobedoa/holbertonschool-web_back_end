@@ -1,4 +1,4 @@
-#!/usr/bin/env pyhton3
+#!/usr/bin/env python3
 """Measure the runtime"""
 import asyncio
 import time
@@ -10,8 +10,6 @@ def measure_time(n: int, max_delay: int = 10) -> float:
     """
     Returns total time / n for wait_n() execution
     """
-    s: float
-    elapsed: float
 
     s = time.perf_counter()
     asyncio.run(wait_n(n, max_delay))
