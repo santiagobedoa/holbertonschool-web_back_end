@@ -25,7 +25,7 @@ class FIFOCache(BaseCaching):
                     self.MAX_ITEMS -= 1
 
                 else:
-                    self.cache_data.popitem(last=False)
+                    print(f"DISCARD: {(self.cache_data.popitem(last=False))[0]}")
                     self.cache_data[key] = item
 
     def get(self, key):
