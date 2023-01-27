@@ -17,13 +17,16 @@ class FIFOCache(BaseCaching):
     def put(self, key, item):
         """Add an item in the cache using FIFO algorithm"""
         if key and item:
-            if self.MAX_ITEMS > 0:
+            if self.cache_data.get(key):
                 self.cache_data[key] = item
-                self.MAX_ITEMS -= 1
-
             else:
-                self.cache_data.popitem(last=False)
-                self.cache_data[key] = item
+                if self.MAX_ITEMS > 0:
+                    self.cache_data[key] = item
+                    self.MAX_ITEMS -= 1
+
+                else:
+                    self.cache_data.popitem(last=False)
+                    self.cache_data[key] = item
 
     def get(self, key):
         """Get an item by key"""
