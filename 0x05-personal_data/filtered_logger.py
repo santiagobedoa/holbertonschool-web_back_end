@@ -7,6 +7,15 @@ import re
 import logging
 
 
+PII_FIELDS = (
+    "name",
+    "email",
+    "phone",
+    "ssn",
+    "password",
+)  # containing the fields from user_data.csv that are considered PII.
+
+
 class RedactingFormatter(logging.Formatter):
     """Redacting Formatter class"""
 
@@ -42,13 +51,6 @@ def filter_datum(
 
 def get_logger() -> logging.Logger:
     """returns a logging.Logger object"""
-    PII_FIELDS = (
-        "name",
-        "email",
-        "phone",
-        "ssn",
-        "password",
-    )  # containing the fields from user_data.csv that are considered PII.
     logger = logging.getLogger("user_data")
     logger.setLevel(logging.INFO)
     logger.propagate = False
