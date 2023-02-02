@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Regex-ing
+Regex-ing, Log formatter, Create logger
 """
 from typing import List
 import re
@@ -38,3 +38,22 @@ def filter_datum(
         )
 
     return message
+
+
+def get_logger() -> logging.Logger:
+    """returns a logging.Logger object"""
+    PII_FIELDS = (
+        "name",
+        "email",
+        "phone",
+        "ssn",
+        "password",
+    )  # containing the fields from user_data.csv that are considered PII.
+    logger = logging.getLogger("user_data")
+    logger.setLevel(logging.INFO)
+    logger.propagate = False
+    handler = logging.StreamHandler()
+    handler.setFormatter(RedactingFormatter(PII_FIELDS))
+    logger.addHandler(handler)
+
+    return logger
