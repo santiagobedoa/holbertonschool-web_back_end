@@ -28,18 +28,18 @@ def stats() -> str:
 
 
 @app_views.route("/unauthorized", methods=["GET"], strict_slashes=False)
-def handle_unathourized() -> str:
+def test_unathourized() -> str:
     """GET /api/v1/unauthorized
     Return:
-      - list of all User objects JSON represented
+        - Raise error
     """
     return abort(401)
 
 
 @app_views.route("/forbidden", methods=["GET"], strict_slashes=False)
-def handle_unathourized() -> str:
+def test_unathourized() -> str:
     """GET /api/v1/forbidden
     Return:
-      - list of all User objects JSON represented
+        - Raise error
     """
     return abort(403)
