@@ -19,23 +19,10 @@ if AUTH_TYPE == "auth":
     from api.v1.auth.auth import Auth
 
     auth = Auth()
+elif AUTH_TYPE == "basic_auth":
+    from api.v1.auth.basic_auth import BasicAuth
 
-
-@app.before_request
-def handle_req():
-    if auth is None:
-        return
-
-    expath = ["/api/v1/status/", "/api/v1/unauthorized/", "/api/v1/forbidden/"]
-
-    if not (auth.require_auth(request.path, expath)):
-        return
-
-    if (auth.authorization_header(request.headers)) is None:
-        abort(401)
-
-    if (auth.current_user(request.remote_user)) is None:
-        abort(403)
+    auth = BasicAuth()
 
 
 @app.errorhandler(404)
@@ -46,8 +33,7 @@ def not_found(error) -> str:
 
 @app.errorhandler(401)
 def unauthorized(error) -> str:
-    """
-    Handle a unauthorized access
+    """Handle a unauthorized access
 
     Args:
         error: Error catch
@@ -60,8 +46,7 @@ def unauthorized(error) -> str:
 
 @app.errorhandler(403)
 def forbidden(error) -> str:
-    """
-    Handle a forbidden resource
+    """Handle a forbidden resource
 
     Args:
         error: Error catch
@@ -70,6 +55,28 @@ def forbidden(error) -> str:
         Info of the error
     """
     return jsonify({"error": "Forbidden"}), 403
+
+
+@app.before_request
+def before_request() -> str:
+    """Execute before each request
+
+    Return:
+        String or nothing
+    """
+    if auth is None:
+        return
+
+    expath = ["/api/v1/status/", "/api/v1/unauthorized/", "/api/v1/forbidden/"]
+
+    if not (auth.require_auth(request.path, expath)):
+        return
+
+    if (auth.authorization_header(request)) is None:
+        abort(401)
+
+    if (auth.current_user(request)) is None:
+        abort(403)
 
 
 if __name__ == "__main__":
