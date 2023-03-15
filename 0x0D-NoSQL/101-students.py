@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
-""" MongoDB Operations with Python using pymongo """
+"""returns all students sorted by score"""
 
 
-from typing import List
-
-
-def schools_by_topic(mongo_collection: object, topic: str) -> List:
-    """Python function that returns the list of
-    school having a specific topic"""
-    data = mongo_collection.find({"topics": topic})
-    list_doc = [d for d in data]
-    return list_doc
+def top_students(mongo_collection):
+    """List all students sorted by score"""
+    return mongo_collection.aggregate(
+        [
+            {"$project": {"name": "$name", "averageScore": {"$avg": "$topics.score"}}},
+            {"$sort": {"averageScore": -1}},
+        ]
+    )
