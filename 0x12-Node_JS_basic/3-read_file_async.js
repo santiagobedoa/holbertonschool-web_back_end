@@ -7,33 +7,23 @@ const countStudents = (aPath) => new Promise((resolve, reject) => {
       return;
     }
 
-    const lines = data.trim().split('\n');
-    const headers = lines[0].split(',');
-    const students = lines
-      .slice(1)
-      .filter((line) => line.trim() !== '')
-      .map((line) => {
-        const values = line.split(',');
-        return headers.reduce((obj, header, i) => {
-          obj[header] = values[i];
-          return obj;
-        }, {});
-      });
-
+    let lines = data.trim().split('\n');
+    lines = lines.slice(1, lines.length);
+    console.log(`Number of students: ${lines.length}`);
     const courses = {};
-    students.forEach((student) => {
-      const course = student.field;
-      if (!courses[course]) courses[course] = [];
-      courses[course].push(student.firstname);
-    });
-
-    console.log(`Number of students: ${students.length}`);
+    for (const row of lines) {
+      const student = row.split(',');
+      if (!courses[student[3]]) courses[student[3]] = [];
+      courses[student[3]].push(student[0]);
+    }
     for (const course in courses) {
-      console.log(
-        `Number of students in ${course}: ${
-          courses[course].length
-        }. List: ${courses[course].join(', ')}`,
-      );
+      if (course) {
+        console.log(
+          `Number of students in ${course}: ${
+            courses[course].length
+          }. List: ${courses[course].join(', ')}`,
+        );
+      }
     }
     resolve();
   });
