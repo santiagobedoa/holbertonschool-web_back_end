@@ -7,9 +7,16 @@ const countStudents = (aPath) => new Promise((resolve, reject) => {
       return;
     }
 
+    const response = [];
+    let msg;
+
     let lines = data.trim().split('\n');
     lines = lines.slice(1, lines.length);
-    console.log(`Number of students: ${lines.length}`);
+
+    msg = `Number of students: ${lines.length}`;
+    console.log(msg);
+    response.push(msg);
+
     const courses = {};
     for (const row of lines) {
       const student = row.split(',');
@@ -18,14 +25,15 @@ const countStudents = (aPath) => new Promise((resolve, reject) => {
     }
     for (const course in courses) {
       if (course) {
-        console.log(
-          `Number of students in ${course}: ${
-            courses[course].length
-          }. List: ${courses[course].join(', ')}`,
-        );
+        msg = `Number of students in ${course}: ${
+          courses[course].length
+        }. List: ${courses[course].join(', ')}`;
+
+        console.log(msg);
+        response.push(msg);
       }
     }
-    resolve();
+    resolve(response);
   });
 });
 
